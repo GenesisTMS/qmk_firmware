@@ -12,10 +12,6 @@ enum layers {
     FKEY, // F-keys
 };
 
-enum custom_keycodes {
-    RGB_SLD = SAFE_RANGE,
-};
-
 // [Key Lock](feature_key_lock.md)
 // |`QK_LOCK`|Hold down the next key pressed, until the key is pressed again|
 //
@@ -266,11 +262,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap: 
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      | RESET  |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |        |      |      |      |      |      |      |           |      |on/off| plin | anm+ |      |      | EEPROM |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |------|           |------|      |      |      |      |      |        |
+ * |        |      |      |      |      |      |------|           |------| hue+ | brt+ | sat+ | spe+ |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -280,19 +276,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        |      |      |       |      |      |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
- *                                 |      |      |------|       |------|      |      |
+ *                                 |LShift|      |------|       |------|      |      |
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
 [SERV] = LAYOUT_ergodox_pretty(
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO, QK_BOOT,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, RGB_TOG, RGB_SLD, RGB_MOD,  KC_NO,   KC_NO, EE_CLR,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                     RGB_HUD, RGB_VAD, RGB_VAI,  RGB_HUI, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, RGB_SAD, RGB_SPD, RGB_SPI,  RGB_SAI, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                                       KC_NO, KC_NO,    KC_NO,   KC_NO, KC_NO,
+    KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO, QK_BOOT,
+    KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, RGB_TOG, RGB_M_P, RGB_MOD,  KC_NO,   KC_NO, EE_CLR,
+    KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                     RGB_HUI, RGB_VAI, RGB_SAI,  RGB_SPI, KC_NO, KC_NO,
+    KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO, KC_NO,
+    KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,                                     KC_NO, KC_NO,    KC_NO,   KC_NO, KC_NO,
                                        KC_NO, KC_NO,       KC_NO, KC_NO,
                                               KC_NO,       KC_NO,
-                                KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO
+                              KC_LSFT, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO
 ),
 
 };
@@ -398,19 +394,6 @@ bool rgb_matrix_indicators_user(void) {
             break;
     }
     return false;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
-            case RGB_SLD:
-                if (record->event.pressed) {
-                    rgblight_mode(1);
-                }
-                return false;
-        }
-    }
-    return true;
 }
 
 // Runs whenever there is a layer state change.
