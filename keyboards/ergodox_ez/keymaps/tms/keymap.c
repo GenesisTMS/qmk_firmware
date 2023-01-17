@@ -4,6 +4,8 @@
 enum layers {
     BASE, // default layer
     SYMB, // symbols
+    DVORAK,
+    DVORAK_SYML,
     GAME, // games
     MDIA, // media keys
     MOVE, // move
@@ -56,13 +58,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `----------------------'
  */
 [BASE] = LAYOUT_ergodox_pretty(
-  KC_CAPS,        KC_1,          KC_2,          KC_3,     KC_4,    KC_5, KC_NO,           KC_NO,   KC_6,  KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
-  KC_TAB,         KC_Q,          KC_W,          KC_E,     KC_R,    KC_T, KC_LALT,         KC_RALT, KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,    KC_NO,
-  KC_ESC,         KC_A,          KC_S,          KC_D,     KC_F,    KC_G,                           KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  OSM(MOD_LSFT),  LT(MOVE,KC_Z), LT(NUME,KC_X), KC_C,     KC_V,    KC_B, KC_BSPC,         KC_DEL,  KC_N,  KC_M,    KC_COMM, KC_DOT,  KC_SLSH, OSM(MOD_RSFT),
-  MO(SERV),       KC_NO,         KC_NO,         MO(MDIA), KC_LGUI,                                        KC_LGUI, KC_NO,   KC_NO,   KC_NO,   MO(SERV),
-                                                                    KC_NO, KC_NO,         KC_NO, KC_NO,
-                                                                           KC_NO,         KC_NO,
+  KC_CAPS,        KC_1,          KC_2,          KC_3,     KC_4,    KC_5, XXXXXXX,         XXXXXXX,   KC_6,  KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
+  KC_TAB,         KC_Q,          KC_W,          KC_E,     KC_R,    KC_T, KC_LALT,         KC_RALT,   KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
+  KC_ESC,         KC_A,          KC_S,          KC_D,     KC_F,    KC_G,                             KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+  OSM(MOD_LSFT),  LT(MOVE,KC_Z), LT(NUME,KC_X), KC_C,     KC_V,    KC_B, KC_BSPC,         KC_DEL,    KC_N,  KC_M,    KC_COMM, KC_DOT,  KC_SLSH, OSM(MOD_RSFT),
+  MO(SERV),       XXXXXXX,       XXXXXXX,       MO(MDIA), KC_LGUI,                                          KC_LGUI, XXXXXXX, XXXXXXX, XXXXXXX, MO(SERV),
+                                                                XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX,
+                                                                         XXXXXXX,         XXXXXXX,
                                                        MO(SYMB), KC_SPC, KC_LBRC,         KC_RBRC, KC_LCTL, MO(SYMB)
   ),
 /* Keymap 1: Symbol Layer
@@ -97,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
 ),
 
-/* Keymap: 
+/* Keymap:
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
@@ -127,6 +129,71 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
                                                         KC_TRNS,     KC_TRNS,
                                       KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
+),
+
+
+/* Keymap: Dvorak base
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |  +   |  (   |  {   |  [   |  &   |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |  TAB   |  ;   |  ,   |  .   |  P   |  Y   |      |           |      |  F   |  G   |  C   |  R   |  L   |   /    |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |  ESC   |  A   |  O   |  E   |  U   |  I   |------|           |------|  D   |  H   |  T   |  N   |  S   |   -    |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * | LSHIFT |  '   |  Q   |  J   |  K   |  X   |      |           |      |  B   |  M   |  W   |  V   |  Z   |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 |      |      |------|       |------|      |      |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+[DVORAK] = LAYOUT_ergodox_pretty(
+  KC_CAPS,        KC_PPLS,         KC_LBRC,        KC_LCBR,   KC_LPRN,   KC_AMPR,  XXXXXXX,       XXXXXXX,  KC_EQL,  KC_RPRN,   KC_RCBR,    KC_RBRC,    KC_PAST,      XXXXXXX,
+  KC_TAB,         KC_SCLN,         KC_COMM,        KC_DOT,    KC_P,      KC_Y,     XXXXXXX,       XXXXXXX,  KC_F,    KC_G,      KC_C,       KC_R,       KC_L,         KC_SLSH,
+  KC_ESC,         KC_A,            KC_O,           KC_E,      KC_U,      KC_I,                              KC_D,    KC_H,      KC_T,       KC_N,       KC_S,         KC_MINS,
+  OSM(MOD_LSFT),  LCTL_T(KC_QUOT), LT(NUME, KC_Q), KC_J,      KC_K,      KC_X,     XXXXXXX,       XXXXXXX,  KC_B,    KC_M,      KC_W,       KC_V,       RCTL_T(KC_Z), OSM(MOD_RSFT),
+  MO(SERV),       XXXXXXX,         XXXXXXX,        MO(MDIA),  KC_LGUI,                                               KC_LGUI,   XXXXXXX,    XXXXXXX,    XXXXXXX,      MO(SERV),
+                                                                         XXXXXXX,  XXXXXXX,       XXXXXXX,  XXXXXXX,
+                                                                                   XXXXXXX,       XXXXXXX,
+                                                               MO(SYMB), KC_SPC,   KC_LBRC,       KC_RBRC,  KC_LCTL,   MO(SYMB)
+),
+
+/* Keymap 1: Dvorak Symbol Layer
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |  :   |   <  |   >  |  $   |  %   |      |           |      |  ^   |  &   |  &   |   *  |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |  _   | BSCP |  (   |  {   |  [   |------|           |------|  ENT |  -   |  +   |  =   |  :   |  `     |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |  )   |  }   |  ]   |      |           |      |      | TAB  |  <   |  >   |  ?   |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 |      |      |------|       |------|      |      |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+[DOVRAK_SYMB] = LAYOUT_ergodox_pretty(
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                         XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+                                               XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX,
+                                                        XXXXXXX,     XXXXXXX,
+                                      XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 /* Keymap 2: Media and mouse keys
@@ -161,7 +228,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
 ),
 
-/* Keymap: 
+/* Keymap:
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
@@ -193,7 +260,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
 ),
 
-/* Keymap: 
+/* Keymap:
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
@@ -225,7 +292,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                        KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_EQL, KC_0
 ),
 
-/* Keymap: 
+/* Keymap:
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
@@ -259,7 +326,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 
-/* Keymap: 
+/* Keymap:
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      | RESET  |
@@ -281,20 +348,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `--------------------'
  */
 [SERV] = LAYOUT_ergodox_pretty(
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO, QK_BOOT,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, RGB_TOG, RGB_M_P, RGB_MOD,  KC_NO,   KC_NO, EE_CLR,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                     RGB_HUI, RGB_VAI, RGB_SAI,  RGB_SPI, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                                     KC_NO, KC_NO,    KC_NO,   KC_NO, KC_NO,
-                                       KC_NO, KC_NO,       KC_NO, KC_NO,
-                                              KC_NO,       KC_NO,
-                              KC_LSFT, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,    XXXXXXX,   XXXXXXX, QK_BOOT,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, RGB_TOG, RGB_M_P, RGB_MOD,  XXXXXXX,   XXXXXXX, EE_CLR,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     RGB_HUI, RGB_VAI, RGB_SAI,  RGB_SPI, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                     XXXXXXX, XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX,
+                                       XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX,
+                                              XXXXXXX,       XXXXXXX,
+                              KC_LSFT, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 };
 
 
-/* Keymap: 
+/* Keymap:
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
@@ -335,16 +402,16 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 [MDIA] = {
 // RIGHT
-{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},     
+{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
 {000, 000, 000}, {243, 222, 234}, {243, 222, 234}, {000, 000, 000}, {000, 000, 000},
-{243, 222, 234}, {243, 222, 234}, {243, 222, 234}, {243, 222, 234}, {000, 000, 000},     
+{243, 222, 234}, {243, 222, 234}, {243, 222, 234}, {243, 222, 234}, {000, 000, 000},
 {000, 000, 000}, {243, 222, 234}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
-                 {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},       
+                 {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
 // LEFT
-{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, 
-{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, 
-{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, 
-{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, 
+{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
+{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
+{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
+{000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
                  {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}
   },
 
