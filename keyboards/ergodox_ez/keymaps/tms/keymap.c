@@ -2,17 +2,39 @@
 #include "version.h"
 
 enum layers {
-    BASE, // default layer
-    SYMB, // symbols
-    DVORAK,
-    DVORAK_SYML,
-    GAME, // games
+    BASE, // qwerty layer
+    SYMB, // qwerty sembols
+    DVRK, // Dvorak
+    DSMB, // Dvorak symbols
     MDIA, // media keys
     MOVE, // move
     NUME, // numberic
     FKEY, // F-keys
     SERV, // service
 };
+
+// enum custom_keycodes {
+//     S_TRUE = SAFE_RANGE,
+//     S_FALSE,
+// };
+
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//     // TODO: Can I be holding down shift and check if that's what I'm pressing right now as well...
+//     switch (keycode) {
+//         case S_TRUE:
+//             if (record->event.pressed) {
+//                 SEND_STRING("true");
+//             }
+//             break;
+//         case S_FALSE:
+//             if (record->event.pressed) {
+//                 SEND_STRING("false");
+//             }
+//             break;
+//     }
+
+//     return true;
+// };
 
 // [Key Lock](feature_key_lock.md)
 // |`QK_LOCK`|Hold down the next key pressed, until the key is pressed again|
@@ -39,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |  CAPS  |   1  |   2  |   3  |   4  |   5  |      |           |      |   6  |   7  |   8  |   9  |   0  |        |
+ * |  CAPS  |   1  |   2  |   3  |   4  |   5  | DVOR |           | DVOR |   6  |   7  |   8  |   9  |   0  |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |  TAB   |   Q  |   W  |   E  |   R  |   T  | LALT |           | RALT |   Y  |   U  |   I  |   O  |   P  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -58,25 +80,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `----------------------'
  */
 [BASE] = LAYOUT_ergodox_pretty(
-  KC_CAPS,        KC_1,          KC_2,          KC_3,     KC_4,    KC_5, XXXXXXX,         XXXXXXX,   KC_6,  KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
-  KC_TAB,         KC_Q,          KC_W,          KC_E,     KC_R,    KC_T, KC_LALT,         KC_RALT,   KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
-  KC_ESC,         KC_A,          KC_S,          KC_D,     KC_F,    KC_G,                             KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  OSM(MOD_LSFT),  LT(MOVE,KC_Z), LT(NUME,KC_X), KC_C,     KC_V,    KC_B, KC_BSPC,         KC_DEL,    KC_N,  KC_M,    KC_COMM, KC_DOT,  KC_SLSH, OSM(MOD_RSFT),
-  MO(SERV),       XXXXXXX,       XXXXXXX,       MO(MDIA), KC_LGUI,                                          KC_LGUI, XXXXXXX, XXXXXXX, XXXXXXX, MO(SERV),
-                                                                XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX,
-                                                                         XXXXXXX,         XXXXXXX,
-                                                       MO(SYMB), KC_SPC, KC_LBRC,         KC_RBRC, KC_LCTL, MO(SYMB)
+  KC_CAPS,        KC_1,          KC_2,          KC_3,     KC_4,    KC_5, TG(DVRK),         TG(DVRK),  KC_6,  KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
+  KC_TAB,         KC_Q,          KC_W,          KC_E,     KC_R,    KC_T,  KC_LALT,         KC_RALT,   KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
+  KC_ESC,         KC_A,          KC_S,          KC_D,     KC_F,    KC_G,                              KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+  OSM(MOD_LSFT),  LT(MOVE,KC_Z), LT(NUME,KC_X), KC_C,     KC_V,    KC_B,  KC_BSPC,         KC_DEL,    KC_N,  KC_M,    KC_COMM, KC_DOT,  KC_SLSH, OSM(MOD_RSFT),
+  MO(SERV),       XXXXXXX,       XXXXXXX,       MO(MDIA), KC_LGUI,                                           KC_LGUI, XXXXXXX, XXXXXXX, XXXXXXX, MO(SERV),
+                                                                XXXXXXX,  XXXXXXX,         XXXXXXX,   XXXXXXX,
+                                                                          XXXXXXX,         XXXXXXX,
+                                                       MO(SYMB), KC_SPC,  KC_LBRC,         KC_RBRC,   KC_LCTL, MO(SYMB)
   ),
 /* Keymap 1: Symbol Layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |  !   |   @  |  #   |  $   |  %   |      |           |      |  ^   |  &   |  &   |   *  |      |        |
+ * |        |  !   |   @  |  #   |  $   |  %   |      |           |      |  ^   |  &   |  *   |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |  _   | BSCP |  (   |  {   |  [   |------|           |------|  ENT |  -   |  +   |  =   |  :   |  `     |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |  )   |  }   |  ]   |      |           |      |      | TAB  |  <   |  >   |  ?   |        |
+ * |        |  \   |  |   |  )   |  }   |  ]   |      |           |      |      | TAB  |  <   |  >   |  ?   |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
@@ -89,111 +111,79 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `--------------------'
  */
 [SYMB] = LAYOUT_ergodox_pretty(
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_TRNS,     KC_TRNS, KC_CIRC, KC_AMPR, KC_ASTR,  KC_TRNS,  KC_TRNS, KC_TRNS,
+  _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______,  _______,  _______, _______,
+  _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, _______,     _______, KC_CIRC, KC_AMPR, KC_ASTR,  _______,  _______, _______,
   KC_TILD, KC_UNDS, KC_BSPC, KC_LPRN, KC_LCBR, KC_LBRC,                       KC_ENT,  KC_MINS, KC_PLUS,  KC_EQL,   KC_COLN, KC_GRV,
-  KC_TRNS, KC_BSLS, KC_PIPE, KC_RPRN, KC_RCBR, KC_RBRC, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TAB,  KC_LT,    KC_GT,    KC_QUES, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-                                               KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
-                                                        KC_TRNS,     KC_TRNS,
-                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
-),
-
-/* Keymap:
- *
- * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
- * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |------|           |------|      |      |      |      |      |        |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
- * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      |      |      |                                       |      |      |      |      |      |
- *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        |      |      |       |      |      |
- *                                 ,------|------|------|       |------+------+------.
- *                                 |      |      |      |       |      |      |      |
- *                                 |      |      |------|       |------|      |      |
- *                                 |      |      |      |       |      |      |      |
- *                                 `--------------------'       `--------------------'
- */
-[GAME] = LAYOUT_ergodox_pretty(
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-                                               KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
-                                                        KC_TRNS,     KC_TRNS,
-                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
+  _______, KC_BSLS, KC_PIPE, KC_RPRN, KC_RCBR, KC_RBRC, _______,     _______, _______, KC_TAB,  KC_LT,    KC_GT,    KC_QUES, _______,
+  _______, _______, _______, _______, _______,                                         _______, _______,  _______,  _______, _______,
+                                               _______, _______,     _______, _______,
+                                                        _______,     _______,
+                                      _______, _______, _______,     _______, _______, _______
 ),
 
 
 /* Keymap: Dvorak base
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |  +   |  (   |  {   |  [   |  &   |      |           |      |      |      |      |      |      |        |
+ * |  CAPS  |  1   |  2   |  3   |  4   |  5   | QWER |           | QWER |  6   |  7   |  8   |  9   |  0   |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |  TAB   |  ;   |  ,   |  .   |  P   |  Y   |      |           |      |  F   |  G   |  C   |  R   |  L   |   /    |
+ * |  TAB   |  ;   |  ,   |  .   |  P   |  Y   | NUME |           |      |  F   |  G   |  C   |  R   |  L   |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |  ESC   |  A   |  O   |  E   |  U   |  I   |------|           |------|  D   |  H   |  T   |  N   |  S   |   -    |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | LSHIFT |  '   |  Q   |  J   |  K   |  X   |      |           |      |  B   |  M   |  W   |  V   |  Z   |        |
+ * |--------+------+------+------+------+------| HYPR |           | MEH  |------+------+------+------+------+--------|
+ * | LSHIFT |'/CTRL|  Q   |  J   |  K   |  X   |      |           |      |  B   |  M   |  W   |  V   |Z/CTRL| RSHIFT |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   | SERV |      |      | MOVE | LGUI |                                       | RGUI | MDIA |      |      | SERV |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |      |      |       |      |      |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
- *                                 |      |      |------|       |------|      |      |
- *                                 |      |      |      |       |      |      |      |
+ *                                 | LSMB | SPC  |------|       |------| ENTR | LSMB |
+ *                                 |      |      | MDIA |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
-[DVORAK] = LAYOUT_ergodox_pretty(
-  KC_CAPS,        KC_PPLS,         KC_LBRC,        KC_LCBR,   KC_LPRN,   KC_AMPR,  XXXXXXX,       XXXXXXX,  KC_EQL,  KC_RPRN,   KC_RCBR,    KC_RBRC,    KC_PAST,      XXXXXXX,
-  KC_TAB,         KC_SCLN,         KC_COMM,        KC_DOT,    KC_P,      KC_Y,     XXXXXXX,       XXXXXXX,  KC_F,    KC_G,      KC_C,       KC_R,       KC_L,         KC_SLSH,
-  KC_ESC,         KC_A,            KC_O,           KC_E,      KC_U,      KC_I,                              KC_D,    KC_H,      KC_T,       KC_N,       KC_S,         KC_MINS,
-  OSM(MOD_LSFT),  LCTL_T(KC_QUOT), LT(NUME, KC_Q), KC_J,      KC_K,      KC_X,     XXXXXXX,       XXXXXXX,  KC_B,    KC_M,      KC_W,       KC_V,       RCTL_T(KC_Z), OSM(MOD_RSFT),
-  MO(SERV),       XXXXXXX,         XXXXXXX,        MO(MDIA),  KC_LGUI,                                               KC_LGUI,   XXXXXXX,    XXXXXXX,    XXXXXXX,      MO(SERV),
-                                                                         XXXXXXX,  XXXXXXX,       XXXXXXX,  XXXXXXX,
+[DVRK] = LAYOUT_ergodox_pretty(
+  KC_CAPS,        KC_1,            KC_2,          KC_3,      KC_4,      KC_5,     TG(DVRK),       TG(DVRK),  KC_6,    KC_7,      KC_8,       KC_9,       KC_0,         XXXXXXX,
+  KC_TAB,         KC_SCLN,         KC_COMM,       KC_DOT,    KC_P,      KC_Y,     MO(NUME),       XXXXXXX,   KC_F,    KC_G,      KC_C,       KC_R,       KC_L,         XXXXXXX,
+  KC_ESC,         KC_A,            KC_O,          KC_E,      KC_U,      KC_I,                                KC_D,    KC_H,      KC_T,       KC_N,       KC_S,         KC_MINS,
+  MOD_LSFT,       LCTL_T(KC_QUOT), KC_Q,          KC_J,      KC_K,      KC_X,     MOD_HYPR,       MOD_MEH,   KC_B,    KC_M,      KC_W,       KC_V,       RCTL_T(KC_Z), MOD_RSFT,
+  MO(SERV),       XXXXXXX,         XXXXXXX,       MO(MOVE),  KC_LGUI,                                                 KC_LGUI,   XXXXXXX,    XXXXXXX,    XXXXXXX,      MO(SERV),
+                                                                        XXXXXXX,   XXXXXXX,       XXXXXXX,   XXXXXXX,
                                                                                    XXXXXXX,       XXXXXXX,
-                                                               MO(SYMB), KC_SPC,   KC_LBRC,       KC_RBRC,  KC_LCTL,   MO(SYMB)
+                                                              MO(DSMB), KC_SPC,   MO(MDIA),       XXXXXXX,   KC_ENT,  MO(DSMB)
 ),
 
 /* Keymap 1: Dvorak Symbol Layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
- * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |  :   |   <  |   >  |  $   |  %   |      |           |      |  ^   |  &   |  &   |   *  |      |        |
+ * |--------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
+ * |        |      |  @   |  {   |  [   |  #   |      |           |      |  ^   |  ]   |  }   |  &   |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |  _   | BSCP |  (   |  {   |  [   |------|           |------|  ENT |  -   |  +   |  =   |  :   |  `     |
+ * |        |  |   | BSCP |  (   |  0   |  $   |------|           |------|  *   |  1   |  )   |  =   |  +   |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |  )   |  }   |  ]   |      |           |      |      | TAB  |  <   |  >   |  ?   |        |
+ * |        |  6   |  7   |  8   |  9   |  `   |      |           |      |  %   |  2   |  3   |  4   |  5   |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |      |      |       |      |      |
- *                                 ,------|------|------|       |------+------+------.
+ *                                 ,------+------+------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
- *                                 |      |      |------|       |------|      |      |
+ *                                 |  !   |  \   |------|       |------|  /   |  ?   |
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
-[DOVRAK_SYMB] = LAYOUT_ergodox_pretty(
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                         XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
-                                               XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX,
-                                                        XXXXXXX,     XXXXXXX,
-                                      XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX
+[DSMB] = LAYOUT_ergodox_pretty(
+  _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______,  _______,  _______, _______,
+  _______, _______, KC_AT,   KC_LCBR, KC_LBRC, KC_HASH, _______,     _______, KC_CIRC, KC_RBRC, KC_RCBR,  KC_AMPR,  _______, _______,
+  _______, KC_PIPE, KC_BSPC, KC_LPRN, KC_0,    KC_DLR,                        KC_ASTR, KC_1,    KC_RPRN,  KC_EQL,   KC_PLUS, _______,
+  _______, KC_6,    KC_7,    KC_8,    KC_9,    KC_GRV,  _______,     _______, KC_PERC, KC_2,    KC_3,     KC_4,     KC_5,    _______,
+  _______, _______, _______, _______, _______,                                         _______, _______,  _______,  _______, _______,
+                                               _______, _______,     _______, _______,
+                                                        _______,     _______,
+                                      KC_EXLM, KC_BSLS, _______,     _______, KC_SLSH, KC_QUES
 ),
 
 /* Keymap 2: Media and mouse keys
@@ -218,14 +208,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `--------------------'
  */
 [MDIA] = LAYOUT_ergodox_pretty(
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_MPLY, KC_MSTP,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                       KC_MPRV, KC_VOLD, KC_VOLU,  KC_MNXT,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_MUTE, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-                                               KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
-                                                        KC_TRNS,     KC_TRNS,
-                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_MPLY, KC_MSTP,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_MPRV, KC_VOLD, KC_VOLU,  KC_MNXT,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_MUTE, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                         XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+                                               XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX,
+                                                        XXXXXXX,     XXXXXXX,
+                                      XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 /* Keymap:
@@ -250,14 +240,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `--------------------'
  */
 [MOVE] = LAYOUT_ergodox_pretty(
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END,   KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                       KC_LEFT, KC_DOWN, KC_UP,    KC_RGHT,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_WH_D, KC_WH_U,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-                                               KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
-                                                        KC_TRNS,     KC_TRNS,
-                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, KC_HOME, KC_PGDN, KC_PGUP,  KC_END,   XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_LEFT, KC_DOWN, KC_UP,    KC_RGHT,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_WH_D, KC_WH_U,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                         XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+                                               XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX,
+                                                        XXXXXXX,     XXXXXXX,
+                                      XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 /* Keymap:
@@ -277,19 +267,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        |      |      |       |      |      |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
- *                                 |      |      |------|       |------|  =   |  0   |
+ *                                 | FKEY |  .   |------|       |------|  =   |  0   |
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
 [NUME] = LAYOUT_ergodox_pretty(
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_CIRC, KC_7,    KC_8,     KC_9,     KC_TILD, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,                       KC_PLUS, KC_4,    KC_5,     KC_6,     KC_MINS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, MO(FKEY), KC_PDOT, KC_TRNS, KC_TRNS,     KC_TRNS, KC_ASTR, KC_1,    KC_2,     KC_3,     KC_SLSH, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-                                                KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
-                                                         KC_TRNS,     KC_TRNS,
-                                       KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_EQL, KC_0
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, KC_CIRC, KC_7,    KC_8,     KC_9,     KC_TILD, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX,                       KC_PLUS, KC_4,    KC_5,     KC_6,     KC_MINS, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, MO(FKEY), KC_PDOT, XXXXXXX, XXXXXXX,     XXXXXXX, KC_ASTR, KC_1,    KC_2,     KC_3,     KC_SLSH, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,                                         XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+                                                XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX,
+                                                         XXXXXXX,     XXXXXXX,
+                                      MO(FKEY), KC_PDOT, XXXXXXX,     XXXXXXX, KC_EQL, KC_0
 ),
 
 /* Keymap:
@@ -315,14 +305,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [FKEY] = LAYOUT_ergodox_pretty(
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_F10,  KC_F7,   KC_F8,    KC_F9,    KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                       KC_F11,  KC_F4,   KC_F5,    KC_F6,    KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_F12,  KC_F1,   KC_F2,    KC_F3,    KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
-                                               KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
-                                                        KC_TRNS,     KC_TRNS,
-                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, KC_F10,  KC_F7,   KC_F8,    KC_F9,    XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_F11,  KC_F4,   KC_F5,    KC_F6,    XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, KC_F12,  KC_F1,   KC_F2,    KC_F3,    XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                         XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+                                               XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX,
+                                                        XXXXXXX,     XXXXXXX,
+                                      XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 
@@ -348,14 +338,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `--------------------'
  */
 [SERV] = LAYOUT_ergodox_pretty(
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,    XXXXXXX,   XXXXXXX, QK_BOOT,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, RGB_TOG, RGB_M_P, RGB_MOD,  XXXXXXX,   XXXXXXX, EE_CLR,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     RGB_HUI, RGB_VAI, RGB_SAI,  RGB_SPI, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                     XXXXXXX, XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX,
-                                       XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX,
-                                              XXXXXXX,       XXXXXXX,
-                              KC_LSFT, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, RGB_TOG, RGB_M_P, RGB_MOD, XXXXXXX, XXXXXXX, EE_CLR,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                         RGB_HUI, RGB_VAI, RGB_SAI, RGB_SPI, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                                                 XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX,
+                                                          XXXXXXX,       XXXXXXX,
+                                        KC_LSFT, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 };
@@ -384,22 +374,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 /* [GAME] = LAYOUT_ergodox_pretty(
- *   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
- *   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
- *   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
- *   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
- *   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
- *                                                KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
- *                                                         KC_TRNS,     KC_TRNS,
- *                                       KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
+ *   _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______,  _______,  _______, _______,
+ *   _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______,  _______,  _______, _______,
+ *   _______, _______, _______, _______, _______, _______,                       _______, _______, _______,  _______,  _______, _______,
+ *   _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______,  _______,  _______, _______,
+ *   _______, _______, _______, _______, _______,                                         _______, _______,  _______,  _______, _______,
+ *                                                _______, _______,     _______, _______,
+ *                                                         _______,     _______,
+ *                                       _______, _______, _______,     _______, _______, _______
  * ),
  */
 
 
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
-[GAME] = {{0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {31, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {31, 255, 255}, {31, 255, 255}, {31, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}, {0, 255, 255}},
-
 [MDIA] = {
 // RIGHT
 {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000}, {000, 000, 000},
@@ -453,9 +441,6 @@ bool rgb_matrix_indicators_user(void) {
         return false;
     }
     switch (get_highest_layer(layer_state)) {
-        case GAME:
-            set_layer_color(GAME);
-            break;
         case MDIA:
             set_layer_color(MDIA);
             break;
