@@ -16,8 +16,8 @@ enum layers {
 enum custom_keycodes {
     DVORAK = SAFE_RANGE,
     QWERTY,
-    //     S_TRUE = SAFE_RANGE,
-    //     S_FALSE,
+    S_TRUE,
+    S_FALSE,
 };
 
 // [Key Lock](feature_key_lock.md)
@@ -97,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [DSMB] = LAYOUT_ergodox_pretty(
   _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______,  _______,  _______, _______,
-  _______, _______, KC_AT,   KC_LCBR, KC_LBRC, KC_HASH, _______,     _______, KC_CIRC, KC_RBRC, KC_RCBR,  KC_GRV,   _______, _______,
+  _______, S_FALSE, KC_AT,   KC_LCBR, KC_LBRC, KC_HASH, _______,     _______, KC_CIRC, KC_RBRC, KC_RCBR,  KC_GRV,   S_TRUE,  _______,
   KC_TILD, KC_PIPE, KC_BSPC, KC_LPRN, KC_0,    KC_DLR,                        KC_ASTR, KC_1,    KC_RPRN,  KC_EQL,   KC_PLUS, _______,
   _______, KC_6,    KC_7,    KC_8,    KC_9,    KC_AMPR, _______,     _______, KC_PERC, KC_2,    KC_3,     KC_4,     KC_5,    _______,
   _______, _______, _______, _______, _______,                                         _______, _______,  _______,  _______, _______,
@@ -389,8 +389,6 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
   },
 
 [MOVE] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {0, 0, 0}, {10, 225, 255}, {10, 225, 255}, {10, 225, 255}, {10, 225, 255}, {0, 0, 0}, {0, 0, 0}, {32, 176, 255}, {32, 176, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {85, 203, 158}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-[NUME] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {10, 225, 255}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {10, 225, 255}, {10, 225, 255}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {10, 225, 255}, {10, 225, 255}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {10, 225, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-[FKEY] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {10, 225, 255}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {0, 0, 0}, {10, 225, 255}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {0, 0, 0}, {10, 225, 255}, {32, 176, 255}, {32, 176, 255}, {32, 176, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
 };
 // clang-format on
 
@@ -430,25 +428,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             case QWERTY:
                 set_single_persistent_default_layer(QWRT);
                 return false;
+            case S_TRUE:
+                if (record->event.pressed) {
+                    SEND_STRING("true");
+                }
+                break;
+            case S_FALSE:
+                if (record->event.pressed) {
+                    SEND_STRING("false");
+                }
+                break;
         }
     }
     return true;
 };
-
-//     // TODO: Can I be holding down shift and check if that's what I'm pressing right now as well...
-//     switch (keycode) {
-//         case S_TRUE:
-//             if (record->event.pressed) {
-//                 SEND_STRING("true");
-//             }
-//             break;
-//         case S_FALSE:
-//             if (record->event.pressed) {
-//                 SEND_STRING("false");
-//             }
-//             break;
-//     }
-//     return true;
 
 bool rgb_matrix_indicators_user(void) {
     if (keyboard_config.disable_layer_led) {
@@ -460,12 +453,6 @@ bool rgb_matrix_indicators_user(void) {
             break;
         case MOVE:
             set_layer_color(MOVE);
-            break;
-        case NUME:
-            set_layer_color(NUME);
-            break;
-        case FKEY:
-            set_layer_color(FKEY);
             break;
         default:
             if (rgb_matrix_get_flags() == LED_FLAG_NONE) rgb_matrix_set_color_all(0, 0, 0);
